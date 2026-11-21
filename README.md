@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/35197648/README.md)
 # 3C · Custom Control Content: interactive prototypes
 
 **Shaping the future of digital content safety. Safety powered by 3C.**
@@ -11,8 +10,8 @@ These are clickable prototypes built for a group venture proposal. They run enti
 
 | Prototype | What it shows | Link |
 |---|---|---|
-| **v0 · Tap to check** | The user forwards or taps “Check through 3C” on a suspicious message. The layered filter runs, explains the result in plain language, and the user earns reward points. | [Open v0](https://YOUR-USERNAME.github.io/YOUR-REPO/3c-prototype-v0.html) |
-| **v1 · Automatic** | Protection runs in the background through partners (telco network filter, bank “pause before pay”). 3C only steps in when something is wrong. | [Open v1](https://YOUR-USERNAME.github.io/YOUR-REPO/3c-prototype-v1.html) |
+| **v0 · Tap to check** | The user forwards or taps “Check through 3C” on a suspicious message. The layered filter runs, explains the result in plain language, and the user earns reward points. | [Open v0](https://chua0300.github.io/3C-Prototype/3c-prototype-v0.html) |
+| **v1 · Automatic** | Protection runs in the background through partners (telco network filter, bank “pause before pay”). 3C only steps in when something is wrong. | [Open v1](https://chua0300.github.io/3C-Prototype/3c-prototype-v1.html) |
 
 Both open on a laptop or phone. Use **Reset demo** at the top to start again.
 
@@ -53,14 +52,6 @@ These are concept prototypes for an academic assignment. All names, messages, we
 
 ## Built by
 
-Group 6 · [Course / module name]
+Group 6
 
 <!-- Optional: add team member names here if everyone agrees to be listed publicly. -->
-
----
-
-<!-- If this repository also hosts other projects (e.g. the Trust Bonus Calculator), keep their description below so it isn't lost. -->
-
-## Other projects in this repository
-
-- **[Project name]:** [one-line description] · [link]
