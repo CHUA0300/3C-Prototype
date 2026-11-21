@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3C Prototypes</title>
+<meta name="description" content="Interactive prototypes for 3C · Custom Control Content, a family digital-safety concept.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Visa-inspired palette: Visa Blue hero, digital blue for actions, gold used sparingly as the accent. Layout: hero, two prototype cards, then how-it-works sections. */
+:root{
+  --blue:#1A1F71; --blue-2:#1434CB; --gold:#F7B600; --ink:#141A34; --ink-soft:#4B5170;
+  --bg:#F6F7FB; --paper:#FFFFFF; --line:#DCE0EE; --tint:#EBEEFB; --on-blue:#C7CEEF;
+  --font:'Figtree','Segoe UI',Arial,sans-serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.55}
+a{color:var(--blue-2)}
+a:focus-visible,.btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* hero */
+.hero{background:var(--blue);color:#fff;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--gold)}
+.hero .wrap{padding-top:64px;padding-bottom:72px;display:grid;gap:18px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.hero h1{margin:0;font-size:clamp(36px,6vw,60px);font-weight:800;line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
+.hero h1 .c{color:var(--gold)}
+.hero .tag{margin:0;font-size:clamp(18px,2.4vw,22px);font-weight:600}
+.hero .lede{margin:0;max-width:62ch;color:var(--on-blue)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;border-radius:999px;padding:12px 22px;font-size:16px;transition:transform .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn.gold{background:var(--gold);color:var(--blue)}
+.btn.line{border:2px solid #fff;color:#fff}
+.btn.blue{background:var(--blue-2);color:#fff}
+
+/* prototype cards */
+.protos{margin-top:-36px;position:relative;z-index:1}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:12px;box-shadow:0 10px 30px rgba(26,31,113,.08)}
+.card .k{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-2)}
+.card h2{margin:0;font-size:26px;line-height:1.15;color:var(--blue)}
+.card p{margin:0;color:var(--ink-soft)}
+.card ol{margin:4px 0 0;padding-left:20px;color:var(--ink-soft);display:grid;gap:4px;font-size:15px}
+.card .btn{align-self:flex-start;margin-top:auto}
+.spacer{flex:1}
+
+/* sections */
+section{padding:64px 0 0}
+.sec-k{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-2);margin:0 0 6px}
+section h2.t{margin:0 0 24px;font-size:clamp(26px,3.6vw,34px);color:var(--blue);line-height:1.15;text-wrap:balance}
+
+.layers{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.layers li{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.layers .n{width:34px;height:34px;border-radius:50%;background:var(--tint);color:var(--blue);display:grid;place-items:center;font-weight:800}
+.layers li.core{background:var(--blue);border-color:var(--blue);color:#fff}
+.layers li.core .n{background:var(--gold);color:var(--blue)}
+.layers li.core span{color:var(--on-blue)}
+.layers b{font-size:17px}
+.layers span{font-size:14px;color:var(--ink-soft)}
+.note{margin:14px 0 0;font-size:15px;color:var(--ink-soft)}
+
+.principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.principle{border-left:4px solid var(--gold);background:var(--paper);border-radius:0 14px 14px 0;padding:16px 18px}
+.principle b{display:block;color:var(--blue);font-size:17px;margin-bottom:4px}
+.principle span{font-size:15px;color:var(--ink-soft)}
+
+.disclaimer{margin:64px 0 0;background:var(--tint);border-radius:14px;padding:18px 20px;font-size:14px;color:var(--ink-soft)}
+footer{padding:28px 0 48px;font-size:14px;color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+footer b{color:var(--blue)}
+
+@media (max-width:480px){
+  .hero .wrap{padding-top:44px;padding-bottom:60px}
+  .card{padding:22px}
+}
+@media (prefers-reduced-motion: reduce){.btn{transition:none}.btn:hover{transform:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Content moderation AI · Interactive prototypes</div>
+    <h1>3C · <span class="c">C</span>ustom <span class="c">C</span>ontrol <span class="c">C</span>ontent</h1>
+    <p class="tag">Shaping the future of digital content safety.</p>
+    <p class="lede">3C uses AI to stop scams, deepfakes and harmful content before they reach the people we love, kids and elderly parents, while giving the family alerts, not surveillance.</p>
+    <div class="hero-cta">
+      <a class="btn gold" href="3c-prototype-v0-MVP.html">Try v0 · Tap to check →</a>
+      <a class="btn line" href="3c-prototype-v1Automated.html">Try v1 · Automatic →</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="protos grid2">
+    <article class="card">
+      <div class="k">v0 · Minimal viable prototype</div>
+      <h2>Tap to check</h2>
+      <p>Mdm Tan taps “Check through 3C” on a suspicious message. The layered filter runs, explains the result in plain language, and she earns reward points.</p>
+      <ol>
+        <li>Check the “Ministry Officials” video: the deepfake is caught.</li>
+        <li>Check the PayNow request: the payment is paused for 10 minutes.</li>
+        <li>Open <b>My rewards</b>: enough points for 1GB of mobile data.</li>
+        <li>On Rachel’s dashboard, open a post-mortem report.</li>
+      </ol>
+      <div class="spacer"></div>
+      <a class="btn blue" href="3c-prototype-v0-MVP.html">Open v0 →</a>
+    </article>
+    <article class="card">
+      <div class="k">v1 · Automatic, with partners</div>
+      <h2>Protection runs by itself</h2>
+      <p>Checks run in the background through partners: a telco network filter and a bank “pause before pay”. 3C only steps in when something is wrong.</p>
+      <ol>
+        <li>Use <b>Play out the day</b>: Mdm Tan presses nothing.</li>
+        <li>Tap a scam link in an SMS: the page is stopped before it opens.</li>
+        <li>Visit the supermarket site: it opens normally, checked silently.</li>
+        <li>Ethan switches 3C off: Rachel gets a tamper alert.</li>
+      </ol>
+      <div class="spacer"></div>
+      <a class="btn blue" href="3c-prototype-v1Automated.html">Open v1 →</a>
+    </article>
+  </div>
+
+  <section aria-labelledby="layers-h">
+    <p class="sec-k">How it works</p>
+    <h2 class="t" id="layers-h">Five layers, cheapest first</h2>
+    <ol class="layers">
+      <li><div class="n">1</div><b>Blocklist</b><span>Known scam numbers and links</span></li>
+      <li><div class="n">2</div><b>Machine learning</b><span>Scores messages and links for scam risk</span></li>
+      <li class="core"><div class="n">3</div><b>Deep learning</b><span>Detects deepfake video and voice, only when media is present</span></li>
+      <li><div class="n">4</div><b>Generative AI</b><span>Explains the result in plain language</span></li>
+      <li><div class="n">5</div><b>Tracking</b><span>Logs each check to the family scorecard</span></li>
+    </ol>
+    <p class="note">The expensive deepfake check only runs when the cheaper layers can’t clear the content.</p>
+  </section>
+
+  <section aria-labelledby="pr-h">
+    <p class="sec-k">Design principles</p>
+    <h2 class="t" id="pr-h">Built to be accepted, not bypassed</h2>
+    <div class="principles">
+      <div class="principle"><b>Alerts, not surveillance</b><span>The buyer sees threats, never the family’s chats.</span></div>
+      <div class="principle"><b>Consent first</b><span>Protection is switched on with the user’s agreement.</span></div>
+      <div class="principle"><b>Dignity</b><span>Explain, don’t scold, so seniors keep face.</span></div>
+      <div class="principle"><b>Age-tiered controls</b><span>Teen settings loosen automatically as they grow.</span></div>
+    </div>
+  </section>
+
+  <p class="disclaimer"><b>Disclaimer:</b> these are concept prototypes for an academic assignment. All names, messages, web addresses, scores and point values are illustrative demo data. 3C is not a live product and is not affiliated with any bank, telco, government agency or payment brand.</p>
+
+  <footer>
+    <span><b>3C</b> · Safety powered by Custom Control Content</span>
+    <span>Built by Group 6</span>
+  </footer>
+</main>
+</body>
+</html>
