@@ -10,8 +10,8 @@ These are clickable prototypes built for a group venture proposal. They run enti
 
 | Prototype | What it shows | Link |
 |---|---|---|
-| **v0 · Tap to check** | The user forwards or taps “Check through 3C” on a suspicious message. The layered filter runs, explains the result in plain language, and the user earns reward points. | [Open v0](https://chua0300.github.io/3C-Prototype/3c-prototype-v0.html) |
-| **v1 · Automatic** | Protection runs in the background through partners (telco network filter, bank “pause before pay”). 3C only steps in when something is wrong. | [Open v1](https://chua0300.github.io/3C-Prototype/3c-prototype-v1.html) |
+| **v0 · Tap to check** | The user forwards or taps “Check through 3C” on a suspicious message. The layered filter runs, explains the result in plain language, and the user earns reward points. | [Open v0](https://chua0300.github.io/3C-Prototype/3c-prototype-v0-MVP.html) |
+| **v1 · Automatic** | Protection runs in the background through partners (telco network filter, bank “pause before pay”). 3C only steps in when something is wrong. | [Open v1](https://chua0300.github.io/3C-Prototype/3c-prototype-v1Automated.html) |
 
 Both open on a laptop or phone. Use **Reset demo** at the top to start again.
 
