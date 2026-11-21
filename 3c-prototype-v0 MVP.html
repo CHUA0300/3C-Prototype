@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3C Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Visa-inspired palette: Visa Blue #1A1F71, digital blue #1434CB, gold #F7B600 used sparingly. Layout idea: a demo stage with two live phones side by side — the protected user's phone and the buyer's dashboard — sharing one state. Single light theme matching the 3C deck. */
+:root{
+  --navy:#1A1F71; --cream:#F6F7FB; --paper:#FFFFFF; --teal:#1434CB; --mint:#EBEEFB;
+  --amber:#8A6100; --amber-soft:#FFF1C7; --ink-soft:#4B5170; --line:#DCE0EE;
+  --danger:#B42318; --danger-soft:#FDECEA; --ok:#1434CB;
+  --display:'Figtree', 'Segoe UI', Arial, sans-serif;
+  --body:'Figtree', 'Segoe UI', Arial, sans-serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--cream);color:var(--navy);font-family:var(--body);font-size:15px;line-height:1.45}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.top{max-width:1120px;margin:0 auto;padding:24px 16px 8px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+.top h1{font-family:var(--display);font-size:28px;margin:0;line-height:1.1;text-wrap:balance}
+.top p{margin:4px 0 0;color:var(--ink-soft);max-width:60ch}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.reset{background:transparent;border:1px solid var(--navy);color:var(--navy);border-radius:999px;padding:8px 16px;font-weight:500}
+.stage{max-width:1120px;margin:0 auto;padding:16px 16px 40px;display:flex;flex-wrap:wrap;gap:32px;justify-content:center;align-items:flex-start}
+.col{display:flex;flex-direction:column;gap:10px;align-items:center}
+.col-label{font-size:13px;color:var(--ink-soft);text-align:center}
+.col-label b{color:var(--navy)}
+.phone{width:360px;max-width:calc(100vw - 32px);height:720px;background:var(--paper);border:10px solid var(--navy);border-radius:40px;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:0 18px 40px rgba(26,31,113,.18)}
+.bar{padding:14px 18px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.bar .who{font-family:var(--display);font-weight:700;font-size:17px}
+.bar .sub{font-size:12px;color:var(--ink-soft)}
+.pts{background:var(--amber-soft);color:var(--navy);border-radius:999px;padding:5px 11px;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.screen{flex:1;overflow-y:auto;padding:14px}
+.tabs{display:flex;border-top:1px solid var(--line)}
+.tabs button{flex:1;background:none;border:0;padding:12px 6px;color:var(--ink-soft);font-weight:500;font-size:14px}
+.tabs button[aria-selected="true"]{color:var(--teal);font-weight:700;box-shadow:inset 0 3px 0 var(--teal)}
+/* messages */
+.msg{border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.msg-head{display:flex;gap:10px;align-items:center}
+.av{width:34px;height:34px;border-radius:50%;background:var(--mint);color:var(--teal);display:grid;place-items:center;font-weight:700;flex:none}
+.from{font-weight:700;font-size:14px}
+.kind{font-size:12px;color:var(--ink-soft)}
+.body{font-size:14px}
+.check{align-self:flex-start;background:var(--navy);color:#fff;border:0;border-radius:999px;padding:7px 14px;font-weight:700;font-size:13px}
+.verdict{align-self:flex-start;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700}
+.v-safe{background:var(--mint);color:var(--teal)}
+.v-scam{background:var(--danger-soft);color:var(--danger)}
+.v-pause{background:var(--amber-soft);color:var(--amber)}
+/* check sheet */
+.sheet{position:absolute;inset:0;background:rgba(26,31,113,.45);display:flex;align-items:flex-end}
+.sheet[hidden]{display:none}
+.sheet-card{background:var(--paper);width:100%;max-height:92%;overflow-y:auto;border-radius:22px 22px 0 0;padding:18px;display:flex;flex-direction:column;gap:12px}
+.sheet-card h2{font-family:var(--display);font-size:18px;margin:0}
+.layers{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.layers li{display:grid;grid-template-columns:26px 1fr;gap:8px;align-items:start;font-size:13px;padding:7px 8px;border-radius:10px;background:var(--cream)}
+.dot{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--line);color:var(--ink-soft)}
+.layers li.pass .dot{background:var(--mint);color:var(--teal)}
+.layers li.flag .dot{background:var(--danger-soft);color:var(--danger)}
+.layers li.skip .dot{background:var(--line);color:var(--ink-soft)}
+.layers li.wait{opacity:.45}
+.lname{font-weight:700}
+.lres{color:var(--ink-soft)}
+.result{border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.result.scam{background:var(--danger-soft)}
+.result.safe{background:var(--mint)}
+.result.pause{background:var(--amber-soft)}
+.result .big{font-family:var(--display);font-weight:700;font-size:18px}
+.earned{font-weight:700;color:var(--amber)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border-radius:999px;padding:9px 16px;font-weight:700;border:0}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.ghost{background:transparent;border:1px solid var(--navy);color:var(--navy)}
+/* rewards */
+.hero-pts{background:var(--navy);box-shadow:inset 0 -4px 0 #F7B600;color:#fff;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.hero-pts .n{font-family:var(--display);font-size:34px;font-weight:700;font-variant-numeric:tabular-nums}
+.hero-pts .s{color:#C7CEEF;font-size:13px}
+.badge{align-self:flex-start;background:var(--amber-soft);color:var(--navy);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700}
+.reward{border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.reward .t{font-weight:700;font-size:14px}
+.reward .c{font-size:12px;color:var(--ink-soft)}
+.reward button{background:var(--teal);color:#fff;border:0;border-radius:999px;padding:7px 12px;font-weight:700;font-size:13px;white-space:nowrap}
+.reward button:disabled{background:var(--line);color:var(--ink-soft);cursor:not-allowed}
+.how{font-size:13px;color:var(--ink-soft);background:var(--cream);border-radius:12px;padding:10px 12px}
+/* dashboard */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.tile{background:var(--cream);border-radius:12px;padding:10px 12px}
+.tile .n{font-family:var(--display);font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.tile .l{font-size:12px;color:var(--ink-soft)}
+.tile.score{background:var(--navy);color:#fff;box-shadow:inset 0 -4px 0 #F7B600}
+.tile.score .l{color:#C7CEEF}
+.sec{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 8px}
+.person{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.person:last-child{border-bottom:0}
+.person .nm{font-weight:700;font-size:14px}
+.person .ds{font-size:12px;color:var(--ink-soft)}
+.level{margin-left:auto;border:1px solid var(--teal);background:var(--mint);color:var(--teal);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+.alert{border-left:4px solid var(--danger);background:var(--paper);border-radius:0 12px 12px 0;padding:10px 12px;margin-bottom:8px;box-shadow:0 0 0 1px var(--line) inset}
+.alert.pause{border-left-color:var(--amber)}
+.alert.new{animation:pop .5s ease}
+@keyframes pop{from{background:var(--amber-soft)}to{background:var(--paper)}}
+.alert .t{font-weight:700;font-size:14px}
+.alert .m{font-size:12px;color:var(--ink-soft)}
+.pm-toggle{background:none;border:0;color:var(--teal);font-weight:700;font-size:13px;padding:6px 0 0}
+.pm{font-size:13px;margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.pm[hidden]{display:none}
+.pm span{color:var(--ink-soft)}
+.privacy{font-size:12px;color:var(--ink-soft);background:var(--mint);border-radius:10px;padding:8px 10px;margin-top:12px}
+.foot{max-width:1120px;margin:0 auto;padding:0 16px 32px;color:var(--ink-soft);font-size:13px;text-align:center}
+@media (prefers-reduced-motion: reduce){.alert.new{animation:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div>
+    <div class="eyebrow">3C · Minimal viable prototype</div>
+    <h1>Every link passes through 3C</h1>
+    <p>Tap <b>Check through 3C</b> on Mdm Tan’s phone. Each check runs the layered filter, earns her points, and updates Rachel’s family scorecard.</p>
+  </div>
+  <button class="reset" id="reset" type="button">Reset demo</button>
+</header>
+
+<main class="stage">
+  <section class="col" aria-label="Protected user's phone">
+    <div class="col-label"><b>User:</b> Mdm Tan, 71</div>
+    <div class="phone">
+      <div class="bar">
+        <div><div class="who">Hi, Mdm Tan</div><div class="sub">3C is checking for you</div></div>
+        <div class="pts" id="ptsPill">270 pts</div>
+      </div>
+      <div class="screen" id="userScreen"></div>
+      <nav class="tabs" role="tablist">
+        <button role="tab" id="tabMsgs" aria-selected="true" type="button">Messages</button>
+        <button role="tab" id="tabRewards" aria-selected="false" type="button">My rewards</button>
+      </nav>
+      <div class="sheet" id="sheet" hidden>
+        <div class="sheet-card" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+          <h2 id="sheetTitle">Checking through 3C…</h2>
+          <ul class="layers" id="layers"></ul>
+          <div id="resultBox"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col" aria-label="Buyer's dashboard">
+    <div class="col-label"><b>Buyer:</b> Rachel, 42 · Family plan</div>
+    <div class="phone">
+      <div class="bar">
+        <div><div class="who">Family scorecard</div><div class="sub">November · Tan family</div></div>
+        <div class="pts" style="background:var(--mint);color:var(--teal)">Family plan</div>
+      </div>
+      <div class="screen" id="buyerScreen"></div>
+    </div>
+  </section>
+</main>
+<p class="foot">Prototype with demo data. Names, messages, scores and point values are illustrative.</p>
+
+<script>
+const MSGS = [
+  {id:'deepfake', av:'M', from:'“Ministry Officials”', kind:'Video call recording · forwarded', text:'Urgent: Minister asks citizens to contribute to a national support fund today.',
+   verdict:'scam', layers:[['pass','Not on known scam lists'],['flag','71% risk: urgent request for money'],['flag','Synthetic face and voice detected (94%)']],
+   big:'Fake video. Do not send money.', explain:'This video was made by AI. The face and voice are not real. Real ministers never ask you for money on a video call.',
+   caught:'Deep learning (deepfake check)', alertTitle:'Deepfake video blocked'},
+  {id:'bank', av:'?', from:'+65 8123 ••••', kind:'SMS · unknown number', text:'Your bank account is locked. Verify now: secure-banklogin.co',
+   verdict:'scam', layers:[['flag','Link reported 37 times this week'],['flag','97% risk: copies a bank login page'],['skip','No video or voice to check']],
+   big:'Scam link. Do not open.', explain:'This is not your bank. The page copies the bank’s login to steal your password. Banks never send a link for you to log in. If worried, call the number on your card.',
+   caught:'Blocklist + machine learning', alertTitle:'Phishing link blocked'},
+  {id:'deals', av:'R', from:'Rachel', kind:'WhatsApp · family', text:'Ma, this week’s supermarket deals: supermarket.example.sg/promotions',
+   verdict:'safe', layers:[['pass','Known official website'],['pass','3% risk: low'],['skip','No video or voice to check']],
+   big:'Safe to open.', explain:'This link goes to the real supermarket website.', caught:null},
+  {id:'paynow', av:'L', from:'Mr Lim (room rental)', kind:'PayNow request · new payee', text:'Please transfer S$1,200 deposit today to secure the room.',
+   verdict:'pause', layers:[['pass','Not on known scam lists'],['flag','64% risk: new payee, pressure to pay today'],['skip','No video or voice to check']],
+   big:'Payment paused for 10 minutes.', explain:'You have not paid this person before, and they want money today. Check with family before you pay.',
+   caught:'Machine learning + pause before pay', alertTitle:'S$1,200 payment paused'}
+];
+const LAYER_NAMES = ['1 · Blocklist','2 · Machine learning','3 · Deep learning'];
+const REWARDS = [
+  {t:'1GB mobile data', c:'From your telco', cost:300},
+  {t:'S$5 supermarket voucher', c:'Any outlet', cost:500},
+  {t:'S$10 ride voucher', c:'Taxi or private hire', cost:900}
+];
+const START_ALERTS = [
+  {kind:'scam', who:'Ethan, 14', title:'Stranger building trust too fast', when:'Last week', layer:'Machine learning (chat pattern)',
+   saw:'A new contact asked Ethan to move to a private app after two days.', outcome:'Ethan was shown why it was flagged. No contact made.'}
+];
+let state;
+function fresh(){return {pts:270, checked:{}, checks:0, blocked:0, paused:0, safe:0, alerts:START_ALERTS.map(a=>({...a})), redeemed:[], tab:'msgs', levels:{tan:0, ethan:1, mia:2}, open:{}};}
+state = fresh();
+const delay = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 450;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function renderUser(){
+  $('ptsPill').textContent = state.pts + ' pts';
+  $('tabMsgs').setAttribute('aria-selected', state.tab==='msgs');
+  $('tabRewards').setAttribute('aria-selected', state.tab==='rewards');
+  const s = $('userScreen');
+  if(state.tab==='msgs'){
+    s.innerHTML = MSGS.map(m=>{
+      const done = state.checked[m.id];
+      const v = done ? `<span class="verdict v-${m.verdict}">${m.verdict==='safe'?'✓ Safe':m.verdict==='scam'?'⚠ Scam blocked':'⏸ Payment paused'}</span>`
+                     : `<button class="check" type="button" data-check="${m.id}">Check through 3C</button>`;
+      return `<article class="msg"><div class="msg-head"><div class="av" aria-hidden="true">${esc(m.av)}</div><div><div class="from">${esc(m.from)}</div><div class="kind">${esc(m.kind)}</div></div></div><div class="body">${esc(m.text)}</div>${v}</article>`;
+    }).join('') + `<div class="how">Earn 10 points for every check, plus 20 when you spot a scam.</div>`;
+  } else {
+    const level = state.pts >= 600 ? 'Scam Spotter · Level 3' : state.pts >= 300 ? 'Scam Spotter · Level 2' : 'Scam Spotter · Level 1';
+    s.innerHTML = `<div class="hero-pts"><span class="badge">${level}</span><div class="n">${state.pts} pts</div><div class="s">${state.checks} checks made this month · ${state.blocked + state.paused} scams spotted</div></div>`
+      + REWARDS.map((r,i)=>{
+        const got = state.redeemed.includes(i);
+        return `<div class="reward"><div><div class="t">${esc(r.t)}</div><div class="c">${esc(r.c)} · ${r.cost} pts</div></div><button type="button" data-redeem="${i}" ${got||state.pts<r.cost?'disabled':''}>${got?'Redeemed':'Redeem'}</button></div>`;
+      }).join('') + `<div class="how">Points reward checking, not being watched. The more you check, the smarter you get.</div>`;
+  }
+}
+
+function renderBuyer(){
+  const score = Math.min(99, 82 + state.blocked*4 + state.paused*3 + state.safe);
+  const lv = ['Scam-focused','Teen: balanced','Strict'];
+  const people = [['tan','Mdm Tan, 71','Mum · consented 2 Nov'],['ethan','Ethan, 14','Loosens automatically at 16'],['mia','Mia, 9','Loosens automatically at 13']];
+  $('buyerScreen').innerHTML = `
+    <div class="tiles">
+      <div class="tile score"><div class="n">${score}</div><div class="l">Family safety score</div></div>
+      <div class="tile"><div class="n">${state.checks + 41}</div><div class="l">Checks this month</div></div>
+      <div class="tile"><div class="n">${state.blocked + 3}</div><div class="l">Scams blocked</div></div>
+      <div class="tile"><div class="n">S$0</div><div class="l">Lost to scams</div></div>
+    </div>
+    <div class="sec">Alerts · high risk only</div>
+    ${state.alerts.map((a,i)=>`<div class="alert ${a.kind==='pause'?'pause':''} ${a.fresh?'new':''}">
+       <div class="t">${esc(a.title)}</div><div class="m">${esc(a.who)} · ${esc(a.when)}</div>
+       <button class="pm-toggle" type="button" data-pm="${i}" aria-expanded="${!!state.open[i]}">${state.open[i]?'Hide':'View'} post-mortem report</button>
+       <div class="pm" ${state.open[i]?'':'hidden'}><div><span>Caught by:</span> ${esc(a.layer)}</div><div><span>What happened:</span> ${esc(a.saw)}</div><div><span>Outcome:</span> ${esc(a.outcome)}</div></div>
+     </div>`).join('')}
+    <div class="sec">Custom controls · tap to change</div>
+    ${people.map(([k,n,d])=>`<div class="person"><div class="av" aria-hidden="true">${n[0]}</div><div><div class="nm">${n}</div><div class="ds">${d}</div></div><button class="level" type="button" data-level="${k}">${lv[state.levels[k]]}</button></div>`).join('')}
+    <div class="privacy">You see alerts only, never your family’s chats. ${state.safe + 38} safe checks this month are counted, not shown.</div>`;
+  state.alerts.forEach(a=>a.fresh=false);
+}
+
+function runCheck(id){
+  const m = MSGS.find(x=>x.id===id);
+  $('sheet').hidden = false;
+  $('sheetTitle').textContent = 'Checking through 3C…';
+  $('resultBox').innerHTML = '';
+  const rows = [...LAYER_NAMES.map((n,i)=>[n, m.layers[i]]), ['4 · Generative AI',['pass','Writing a plain explanation']], ['5 · Tracking',['pass','Logged to family scorecard']]];
+  $('layers').innerHTML = rows.map(([n])=>`<li class="wait"><div class="dot">·</div><div><div class="lname">${n}</div><div class="lres">Waiting…</div></div></li>`).join('');
+  const lis = [...$('layers').children];
+  rows.forEach(([n,[st,txt]],i)=>{
+    setTimeout(()=>{
+      const li = lis[i]; li.className = st;
+      li.querySelector('.dot').textContent = st==='pass'?'✓':st==='flag'?'!':'–';
+      li.querySelector('.lres').textContent = (st==='skip'?'Skipped: ':'') + txt;
+      if(i===rows.length-1) finish(m);
+    }, delay*(i+1));
+  });
+}
+
+function finish(m){
+  const bonus = m.verdict==='safe' ? 0 : 20;
+  state.pts += 10 + bonus; state.checks++; state.checked[m.id] = true;
+  if(m.verdict==='scam') state.blocked++; else if(m.verdict==='pause') state.paused++; else state.safe++;
+  if(m.caught){
+    state.open = {};
+    state.alerts.unshift({kind:m.verdict, who:'Mdm Tan, 71', title:m.alertTitle, when:'Just now', layer:m.caught, saw:m.text,
+      outcome: m.verdict==='pause' ? 'Payment held 10 minutes. Mum was asked to check with family.' : 'Blocked before opening. Mum saw a plain explanation.', fresh:true});
+  }
+  $('ptsPill').textContent = state.pts + ' pts';
+  $('sheetTitle').textContent = 'Checked';
+  const pay = m.verdict==='pause' ? `<div class="row"><button class="btn primary" type="button" data-close>Ask Rachel first</button><button class="btn ghost" type="button" data-close>Cancel payment</button></div>`
+                                  : `<div class="row"><button class="btn primary" type="button" data-close>Done</button></div>`;
+  $('resultBox').innerHTML = `<div class="result ${m.verdict}"><div class="big">${esc(m.big)}</div><div>${esc(m.explain)}</div><div class="earned">+${10+bonus} points${bonus?' · well spotted':''}</div></div>${pay}`;
+  $('resultBox').querySelector('[data-close]').focus();
+  renderBuyer();
+}
+
+document.addEventListener('click', e=>{
+  const t = e.target.closest('button'); if(!t) return;
+  if(t.dataset.check){ runCheck(t.dataset.check); }
+  else if('close' in t.dataset){ $('sheet').hidden = true; renderUser(); }
+  else if(t.dataset.redeem){ const i=+t.dataset.redeem, r=REWARDS[i]; if(state.pts>=r.cost && !state.redeemed.includes(i)){ state.pts-=r.cost; state.redeemed.push(i); renderUser(); } }
+  else if(t.dataset.pm){ const i=+t.dataset.pm; state.open[i]=!state.open[i]; renderBuyer(); }
+  else if(t.dataset.level){ const k=t.dataset.level; state.levels[k]=(state.levels[k]+1)%3; renderBuyer(); }
+  else if(t.id==='tabMsgs'){ state.tab='msgs'; renderUser(); }
+  else if(t.id==='tabRewards'){ state.tab='rewards'; renderUser(); }
+  else if(t.id==='reset'){ state=fresh(); $('sheet').hidden=true; renderUser(); renderBuyer(); }
+});
+renderUser(); renderBuyer();
+</script>
+</body>
+</html>
